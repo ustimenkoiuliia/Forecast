@@ -5,13 +5,44 @@ let countryOutput = document.querySelector("#country");
 let dateOutput = document.querySelector("#card-date");
 let tempOutput = document.querySelector("#card-value");
 let pictureMain = document.querySelector("#card-img");
+let picturesForecast = document.querySelectorAll('.next-day-img img');
 let descOutput = document.querySelector("#card-description");
 let apiKey = "5b32f58ca8e436ffc930aed944f518c6";
+console.log(picturesForecast)
 
+function swapPicture(picture, status) {
+  switch (status) {
+    case 'clear sky':
+    case 'sunny':
+      picture.src = 'img/funny_weather/sunny.png'
+      break;
+    case 'broken clouds':
+    case 'overcast clouds':
+      picture.src = 'img/funny_weather/cloud.png'
+      break;
+    case 'few clouds':
+    case 'scattered clouds':
+      picture.src = 'img/funny_weather/cloudy.png'
+      break;
+    case 'light rain':
+    case 'moderate rain':
+    case 'heavy intensity rain':
+      picture.src = 'img/funny_weather/rainy.png'
+      break;
+    case 'thunderstorm':
+      picture.src = 'img/funny_weather/thunder.png'
+      break;
+    case 'snow':
+    case 'light snow':
+    case 'heavy snow':
+      picture.src = 'img/funny_weather/snow.png'
+      break;
+    
+  }
+}
 
-function setWeather(city) {
+function getWeather(city) {
   let baseUrl = "https://api.openweathermap.org/data/2.5/weather?";
-
   let url = `${baseUrl}q=${city}&appid=${apiKey}`;
   fetch(url)
   .then((response) => {
@@ -22,57 +53,47 @@ function setWeather(city) {
     }
   })
     .then((json) => {
-      console.log(json);
-      console.log(json.sys.country);
+      // console.log(json);
       const description = json.weather[0]['description'];
       cityOutput.innerHTML = json.name;
       countryOutput.innerHTML = json.sys.country;
       tempOutput.innerHTML = Math.round(json.main.temp - 273.15) + "°c";
       descOutput.innerHTML = description;
-      switch (description) {
-        case 'clear sky':
-        case 'sunny':
-          pictureMain.src = 'img/funny_weather/sunny.png'
-          break;
-        case 'broken clouds':
-        case 'overcast clouds':
-          pictureMain.src = 'img/funny_weather/cloud.png'
-          break;
-        case 'few clouds':
-        case 'scattered clouds':
-          pictureMain.src = 'img/funny_weather/cloudy.png'
-          break;
-        case 'light rain':
-        case 'moderate rain':
-        case 'heavy intensity rain':
-          pictureMain.src = 'img/funny_weather/rainy.png'
-          break;
-        case 'thunderstorm':
-          pictureMain.src = 'img/funny_weather/thunder.png'
-          break;
-        case 'snow':
-        case 'light snow':
-        case 'heavy snow':
-          pictureMain.src = 'img/funny_weather/snow.png'
-          break;
-        
-      }
+      swapPicture(pictureMain, description)
       input.value = '';
     })
     .catch(error => {
       alert(error);
+    })
+  
+}
+
+function getForecast(city) {
+  let baseForecastUrl = "https://api.openweathermap.org/data/2.5/forecast?"
+  let urlForecast = `${baseForecastUrl}q=${city}&appid=${apiKey}`;
+  fetch(urlForecast)
+  .then(response => response.json())
+  .then(json => {
+    console.log(json)
+    const date = new Date();
+    for (let i = 0; i < 4; i++){
+      date.setDate(date.getDate() + 1);
+      const dayOfWeek = date.toLocaleDateString("en-US", { weekday: "short" });
+      document.getElementById(`day${i + 1}`).innerHTML = dayOfWeek;
+
+      const temp = Math.round(json.list[i * 8].main.temp - 273.15);
+      document.getElementById(`temp${i + 1}`).innerHTML = `${temp}°C`;
+
+      const description = json.list[i * 8].weather[0]['description'];
+      console.log(description)
+      const picture = picturesForecast[i];
+      swapPicture(picture, description);
+
+    }
   })
 }
 
-// получаем значение из формы
-let form = document.forms[0];
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
-  let city = input.value.trim();
-  setWeather(city)
- 
-});
-
+// получаем погоду по умолчания в киеве при загрузке 
 window.addEventListener("load", function () {
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -85,9 +106,19 @@ window.addEventListener("load", function () {
   const formattedDate = `${dayOfWeek} ${date} ${month}`;
   dateOutput.innerHTML = formattedDate;
 
-  setWeather('Kiev')
+  let city = 'Kiev'
 
-  
-
+  getWeather(city)
+  getForecast(city)
 });
+
+// получаем значение из формы и вешаем слушатель, погода на сейчас
+let form = document.forms[0];
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+  let city = input.value.trim();
+  getWeather(city)
+  getForecast(city)
+});
+
 

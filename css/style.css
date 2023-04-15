@@ -146,7 +146,7 @@ body{
   text-align: right;
 }
 
-.days, .forecast, .forecast-images{
+/* .days, .forecast, .forecast-images{
   display: flex;
   justify-content: space-between;
 }
@@ -155,4 +155,21 @@ body{
   width: 30px;
   height: 30px;
 
+} */
+
+.next-days{
+  display: flex;
+  justify-content: space-between;
+}
+
+.next-day{
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  align-items: center;
+}
+
+.next-day-img img{
+  width: 30px;
+  height: 30px;
 }

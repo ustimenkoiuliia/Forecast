@@ -14,45 +14,45 @@
     <h1 class="title">Weather forecast</h1>
     <form>
       <input class="input" id="input" type="text" placeholder="Enter city">
-      <button class="btn" id="btn">Show</button>
+      <input type="submit" class="btn" value="Show">
     </form>
   </header>
 
   <div class="card">
     <div class="card-info">
-      <h2 class="card-city">Cavan <span>IRE</span> </h2>
-      <div class="card-date">Fri 13 Apr</div>
+      <h2 class="card-city" id="card-city">Cavan </h2> <span id="country">IRE</span>
+      <div class="card-date" id="card-date">Fri 13 Apr</div>
     </div>
 
     <div class="card-weather">
-      <div class="card-value">11<sup>°c</sup></div>
-      <img class="card-img" src="img/cloudy.png" alt="weather">
+      <div class="card-value" id="card-value">5<sup>°c</sup></div>
+      <img class="card-img" id="card-img" src="img/funny_weather/sunny.png" alt="weather">
     </div>
-    <div class="cars-description">Cloudy</div>
+    <div class="card-description" id="card-description">Cloudy</div>
 
     <div class="days">
-      <div class="day">Sat</div>
-      <div class="day">Sun</div>
-      <div class="day">Mon</div>
-      <div class="day">Tue</div>
+      <div class="day" id="day1">Sat</div>
+      <div class="day" id="day2">Sun</div>
+      <div class="day" id="day3">Mon</div>
+      <div class="day" id="day4">Tue</div>
     </div>
 
     <div class="forecast">
-      <div class="forecast">10°c</div>
-      <div class="forecast">9°c</div>
-      <div class="forecast">8°c</div>
-      <div class="forecast">5°c</div>
+      <div class="forecast" id="temp1">10°c</div>
+      <div class="forecast" id="temp2">9°c</div>
+      <div class="forecast" id="temp3">8°c</div>
+      <div class="forecast" id="temp4">5°c</div>
     </div>
 
     <div class="forecast-images">
-      <div class="forecast-img"><img src="img/dark-and-stormy.png" alt=""></div>
-      <div class="forecast-img"><img src="img/rain.png" alt=""></div>
-      <div class="forecast-img"><img src="img/windy.png" alt=""></div>
-      <div class="forecast-img"><img src="img/foggy.png" alt=""></div>
+      <div class="forecast-img" id="img1"><img src="img/funny_weather/cloud.png" alt=""></div>
+      <div class="forecast-img" id="img2"><img src="img/funny_weather/thunder.png" alt=""></div>
+      <div class="forecast-img" id="img3"><img src="img/funny_weather/windy.png" alt=""></div>
+      <div class="forecast-img" id="img4"><img src="img/funny_weather/cloudy.png" alt=""></div>
     </div>
 
   </div>
 
- <script src="main.js"></script> 
+<script src="main.js"></script> 
 </body>
 </html>

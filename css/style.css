@@ -173,3 +173,36 @@ body{
   width: 30px;
   height: 30px;
 }
+
+@media (max-width: 460px) {
+
+  .header{
+    padding: 20px 10px 20px 10px;
+  }
+  form{
+    width: 300px;
+  }
+
+  .input, .btn{
+    width: 100%;
+  }
+
+  .input::placeholder {
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .card{
+    width: 300px;
+  }
+
+  .card-value{
+    font-size: 70px;
+  }
+
+  .card-date{
+    font-size: 20px;
+  }
+}
+
+

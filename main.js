@@ -1,3 +1,4 @@
+let header = document.querySelector('.header');
 let input = document.querySelector("#input");
 let button = document.querySelector("#btn");
 let cityOutput = document.querySelector("#card-city");
@@ -8,7 +9,23 @@ let pictureMain = document.querySelector("#card-img");
 let picturesForecast = document.querySelectorAll('.next-day-img img');
 let descOutput = document.querySelector("#card-description");
 let apiKey = "5b32f58ca8e436ffc930aed944f518c6";
-console.log(picturesForecast)
+let toggle = document.querySelector('#toggle')
+let toggleState = 'c';
+function toggleChange(unit) {
+  if (toggle.checked) {
+    unit = 'f'
+  } else {
+    unit = 'c'
+  }
+  toggleState = unit;
+  console.log(unit)
+}
+toggle.addEventListener('change', function () {
+  let city = cityOutput.textContent
+  toggleChange(toggleState)
+  getWeather(city)
+  getForecast(city)
+})
 
 function swapPicture(picture, status) {
   switch (status) {
@@ -57,7 +74,13 @@ function getWeather(city) {
       const description = json.weather[0]['description'];
       cityOutput.innerHTML = json.name;
       countryOutput.innerHTML = json.sys.country;
-      tempOutput.innerHTML = Math.round(json.main.temp - 273.15) + "°c";
+      // tempOutput.innerHTML = Math.round(json.main.temp - 273.15) + "°c";
+      if (toggleState == 'c') {
+              tempOutput.innerHTML = Math.round(json.main.temp - 273.15) + "°c";
+      } else {
+        const fahrenheit = (json.main.temp - 273.15) * 9/5 + 32;
+        tempOutput.innerHTML = Math.round(fahrenheit) + "°F";
+      }
       descOutput.innerHTML = description;
       swapPicture(pictureMain, description)
       input.value = '';
@@ -81,8 +104,15 @@ function getForecast(city) {
       const dayOfWeek = date.toLocaleDateString("en-US", { weekday: "short" });
       document.getElementById(`day${i + 1}`).innerHTML = dayOfWeek;
 
-      const temp = Math.round(json.list[i * 8].main.temp - 273.15);
-      document.getElementById(`temp${i + 1}`).innerHTML = `${temp}°C`;
+      let temp;
+      if (toggleState == 'c') {
+        temp = Math.round(json.list[i * 8].main.temp - 273.15);
+        document.getElementById(`temp${i + 1}`).innerHTML = `${temp}°C`;
+      } else {
+        temp = Math.round(json.list[i * 8].main.temp * 9/5 - 459.67);
+        document.getElementById(`temp${i + 1}`).innerHTML = `${temp}°F`;
+      }
+      
 
       const description = json.list[i * 8].weather[0]['description'];
       console.log(description)
@@ -120,5 +150,7 @@ form.addEventListener("submit", function (e) {
   getWeather(city)
   getForecast(city)
 });
+
+
 
 
